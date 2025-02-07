@@ -1,0 +1,19 @@
+{
+    "name": "lfphp/limg",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "LFPhp\\Limg\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "sasumi",
+            "email": "cnsasumi@gmail.com"
+        }
+    ],
+    "require": {
+        "intervention/image": "^2.7",
+        "lfphp/func": "^2.0"
+    }
+}
