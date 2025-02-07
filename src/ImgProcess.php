@@ -3,6 +3,8 @@ namespace LFPhp\Limg;
 
 use Intervention\Image\ImageManager;
 use Intervention\Image\ImageManagerStatic;
+use function LFPhp\Func\create_tmp_file;
+use function LFPhp\Func\get_mimes_by_extension;
 
 class ImgProcess {
 	private $origin_file;
@@ -17,6 +19,18 @@ class ImgProcess {
 		$this->img = ImageManagerStatic::make($img_file);
 	}
 
+	public static function fromImg($img_file){
+		return new self($img_file);
+	}
+
+	/**
+	 * 生成缩略图
+	 * @param int $width
+	 * @param int $height
+	 * @param string $resize_type 缩放类型
+	 * @param string $format 格式
+	 * @return $this
+	 */
 	public function thumb($width, $height, $resize_type = self::RESIZE_TYPE_COVER, $format = 'jpg'){
 		$this->fixOrientate()->changeFormat($format)->resize($width, $height, $resize_type);
 		return $this;
@@ -30,12 +44,12 @@ class ImgProcess {
 		return $this;
 	}
 
-	public function save($quality = 100){
+	public function save($quality = 90){
 		$this->img->save($this->origin_file, $quality);
 		return $this;
 	}
 
-	public function saveAs($new_file, $quality = 100){
+	public function saveAs($new_file, $quality = 90){
 		$this->img->save($new_file, $quality);
 		$this->origin_file = $new_file;
 		return $this;
@@ -80,7 +94,7 @@ class ImgProcess {
 			$canvas = ImageManagerStatic::canvas($img_w, $img_h);
 		}
 		$canvas->insert($this->img, 'center');
-		$tmp_name = tmpfile();
+		$tmp_name = create_tmp_file('', '', '', 0777, true);
 		$canvas->save($tmp_name);
 		$this->img = ImageManagerStatic::make($tmp_name);
 		return $this;
@@ -94,6 +108,12 @@ class ImgProcess {
 		return $this;
 	}
 
+	/**
+	 * 添加重复文字水印
+	 * @param $text
+	 * @param array $option
+	 * @return $this
+	 */
 	public function addRepeatTextWatermark($text, array $option = []){
 		$option = array_merge([
 			'font-file'  => dirname(__DIR__).'/assets/fz.ttf', //字体文件
@@ -149,13 +169,22 @@ class ImgProcess {
 	}
 
 	/**
-	 * @param string[]|string $toFormat
+	 * 更换图片格式
+	 * @param string[]|string $toFormat 需要更换的图片格式，如果是列表，采用第一个作为目标格式。如果原图格式与目标格式相同，则不转换
 	 */
-	public function changeFormat($toFormat){
+	public function changeFormat($toFormat, $quality = 90){
+		$info = [];
+		$this->getInfo($info);
+		$toFormat = is_string($toFormat) ? [$toFormat] : $toFormat;
+		$to_mimes = [];
+		foreach($toFormat as $tf){
+			$ms = get_mimes_by_extension($tf);
+			$to_mimes = array_merge($to_mimes, $ms);
+		}
+		if(in_array($info['mime'], $to_mimes)){
+			return $this;
+		}
+		$this->img->encode($toFormat[0], $quality);
 		return $this;
-	}
-
-	public static function fromImage($img_file){
-		return new self($img_file);
 	}
 }
