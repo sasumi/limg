@@ -1,18 +1,19 @@
 <?php
 
-use LFPhp\Limg\ImgProcess;
+use LFPhp\Limg\Limg;
 use function LFPhp\Func\dump;
 
 include dirname(__DIR__).'/vendor/autoload.php';
 
 $img = __DIR__.'/a.jpg';
 $new_img = __DIR__.'/b.png';
-ImgProcess::fromImg($img)
+Limg::fromImg($img)
 	->fixOrientate()
-	->resize(800, 400, ImgProcess::RESIZE_TYPE_CONTAIN)
+	->getInfo($origin_info)
+	->resize(800, 400, 'cover', '#000000')
 	->changeFormat('png')
-	->getInfo($info)
 	->addRepeatTextWatermark('hell world')
+	->getInfo($target_info)
 	->saveAs($new_img);
 
-dump($info, 1);
+dump($origin_info, $target_info, 1);

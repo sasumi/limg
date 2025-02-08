@@ -208,16 +208,16 @@
         },
         {
             "name": "lfphp/func",
-            "version": "2.0.31",
+            "version": "2.0.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sasumi/Func.git",
-                "reference": "024a7e2c50720f51cdecdb3af3797735d8b1d5b9"
+                "reference": "3910ce66e4ec78deede1ae297a1741f44746114c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sasumi/Func/zipball/024a7e2c50720f51cdecdb3af3797735d8b1d5b9",
-                "reference": "024a7e2c50720f51cdecdb3af3797735d8b1d5b9",
+                "url": "https://api.github.com/repos/sasumi/Func/zipball/3910ce66e4ec78deede1ae297a1741f44746114c",
+                "reference": "3910ce66e4ec78deede1ae297a1741f44746114c",
                 "shasum": ""
             },
             "require": {
@@ -271,7 +271,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sasumi/Func/issues",
-                "source": "https://github.com/sasumi/Func/tree/2.0.31"
+                "source": "https://github.com/sasumi/Func/tree/2.0.33"
             },
             "funding": [
                 {
@@ -279,7 +279,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-07T04:00:00+00:00"
+            "time": "2025-02-08T04:25:11+00:00"
         },
         {
             "name": "psr/http-factory",
