@@ -10,7 +10,7 @@ $new_img = __DIR__.'/b.png';
 Limg::fromImg($img)
 	->fixOrientate()
 	->getInfo($origin_info)
-	->resize(800, 400, 'cover', '#000000')
+	->resize(800, 400, 'cover')
 	->changeFormat('png')
 	->addRepeatTextWatermark('hell world')
 	->getInfo($target_info)

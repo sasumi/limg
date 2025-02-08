@@ -51,12 +51,12 @@ class Limg {
 	}
 
 	public function save($quality = 90){
-		$this->img->save($this->origin_file, $quality);
+		$this->img->save($this->origin_file, $quality, $this->img->mime());
 		return $this;
 	}
 
 	public function saveAs($new_file, $quality = 90){
-		$this->img->save($new_file, $quality);
+		$this->img->save($new_file, $quality, $this->img->mime());
 		$this->origin_file = $new_file;
 		return $this;
 	}
@@ -80,11 +80,10 @@ class Limg {
 	 * @param int $width 目标宽度
 	 * @param int $height 目标高度
 	 * @param string $resize_type 缩放类型，请参考 https://developer.mozilla.org/zh-CN/docs/Web/CSS/object-fit
-	 * @param string $background_color 背景色（如果缩小图片出现空白情况下填充背景色）
 	 * @return $this
 	 * @throws \Exception
 	 */
-	public function resize($width, $height, $resize_type, $background_color = '#ffffff'){
+	public function resize($width, $height, $resize_type){
 		$img_w = $this->img->width();
 		$img_h = $this->img->height();
 
@@ -98,7 +97,15 @@ class Limg {
 			return $this;
 		}
 
-		$canvas = ImageManagerStatic::canvas($width, $height, $background_color);
+		//如果画布出现空白，只生成目标图片大小，避免空白
+		if($resize_type == 'contain' || $resize_type == 'scale-down'){
+			$width = $result_layout_info['width'];
+			$height = $result_layout_info['height'];
+			$result_layout_info['top'] = 0;
+			$result_layout_info['left'] = 0;
+		}
+
+		$canvas = ImageManagerStatic::canvas($width, $height);
 		$this->img->resize($result_layout_info['width'], $result_layout_info['height']);
 		$canvas->insert($this->img, 'top-left', $result_layout_info['left'], $result_layout_info['top']);
 		$tmp_name = create_tmp_file('', '', '', 0777, true);
