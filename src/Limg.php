@@ -43,6 +43,7 @@ class Limg {
 	}
 
 	/**
+	 * 修正图片方向
 	 * @return $this
 	 */
 	public function fixOrientate(){
