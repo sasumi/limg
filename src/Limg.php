@@ -4,7 +4,6 @@ namespace LFPhp\Limg;
 use Intervention\Image\ImageManager;
 use Intervention\Image\ImageManagerStatic;
 use function LFPhp\Func\create_tmp_file;
-use function LFPhp\Func\dump;
 use function LFPhp\Func\get_mimes_by_extension;
 use function LFPhp\Func\html_object_fit_calculate;
 
